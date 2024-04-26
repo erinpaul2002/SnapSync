@@ -1,13 +1,16 @@
 import React from "react";
 import Image from "next/image";
 import { supabase } from "@/app/utils/supabase/supabase";
-
+import {saveAs} from  "file-saver";
 interface GalleryImageHolderProps {
   imageUrl: string;
   title: string;
   subtitle: string;
 }
-
+const handleDownload = async (imageUrl:string,title:string) => {
+  saveAs(imageUrl,title)
+  
+}
 const deleteImage = async (imgpath:string) => {
   try {
     const { data, error } = await supabase
@@ -54,7 +57,7 @@ const GalleryImageHolder = ({
           <h1 className="title-font text-lg font-medium text-gray-900 mb-3">
             {title}
           </h1>
-          <button className="mr-2 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">Download</button>
+          <button onClick={() => handleDownload(imageUrl,title)} className="mr-2 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">Download</button>
           <button onClick={() => handleDelete(imageUrl)} className="absolute top-0 right-0 m-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-full">X</button>
 
         </div>

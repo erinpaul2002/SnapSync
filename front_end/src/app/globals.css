@@ -2,19 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* styles/globals.css */
-body {
-    background-color: black;  /* Set the background to black */
-    color: white;             /* Set the text color to white for contrast */
-    margin: 0;                /* Remove default margin */
-    padding: 0;               /* Remove default padding */
-    box-sizing: border-box;   /* Optional: Adjusts box sizing to include padding and border */
-  }
-
-html {
-    background-color: black;
-}
-  
 :root{
   overflow: hidden;
 }

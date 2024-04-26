@@ -14,6 +14,10 @@ const config: Config = {
   darkMode: "class",
   theme: {
     extend: {
+      colors:{
+        Jewel:"#5F0F4E",
+        Rose:"#E52A6F"
+      },
       animation: {
         aurora: "aurora 60s linear infinite",
         "meteor-effect": "meteor 5s linear infinite",

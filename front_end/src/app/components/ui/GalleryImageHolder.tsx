@@ -52,7 +52,7 @@ const GalleryImageHolder = ({
           objectFit="cover"
         />
 
-        <div className="px-8 py-10 relative z-10 w-full border-4 border-gray-200 bg-white opacity-0 hover:opacity-100">
+        <div className="flex flex-col px-8 py-14 relative z-10 w-full border-4 border-gray-200 bg-white opacity-0 hover:opacity-100">
           <h2 className="tracking-widest text-sm title-font font-medium text-indigo-500 mb-1">
             {subtitle}
           </h2>
@@ -61,7 +61,7 @@ const GalleryImageHolder = ({
           </h1>
           <button
             onClick={() => handleDownload(imageUrl, title)}
-            className="mr-2 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+            className="mr-2 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded w-1/3 place-self-center justify-self-end"
           >
             Download
           </button>

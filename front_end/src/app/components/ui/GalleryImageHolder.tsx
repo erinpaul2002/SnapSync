@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { supabase } from "@/app/utils/supabase/supabase";
-import {saveAs} from  "file-saver";
+import {saveAs} from "file-saver";
 interface GalleryImageHolderProps {
   imageUrl: string;
   title: string;
@@ -44,10 +44,11 @@ const GalleryImageHolder = ({
   return (
     <div className="lg:w-1/3 sm:w-1/2 p-4">
       <div className="flex relative">
-        <img
+        <Image
           alt="gallery"
           className="absolute inset-0 w-full h-full object-cover object-center"
           src={imageUrl}
+          fill
         />
         
         <div className="px-8 py-10 relative z-10 w-full border-4 border-gray-200 bg-white opacity-0 hover:opacity-100">

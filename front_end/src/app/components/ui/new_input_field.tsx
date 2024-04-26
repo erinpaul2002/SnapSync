@@ -19,12 +19,12 @@ export default function New_Event_input() {
       toast.success("New event created", {
         position: "bottom-right",
         duration: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+        // hideProgressBar: false,
+        // closeOnClick: true,
+        // pauseOnHover: true,
+        // draggable: true,
+        // progress: undefined,
+        // theme: "light",
       });
       return console.log(data);
     } catch (error) {

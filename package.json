@@ -1,6 +1,10 @@
 {
   "dependencies": {
     "@supabase/ssr": "^0.3.0",
+    "file-saver": "^2.0.5",
     "react-hot-toast": "^2.4.1"
+  },
+  "devDependencies": {
+    "@types/file-saver": "^2.0.7"
   }
 }

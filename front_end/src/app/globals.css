@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-<<<<<<< HEAD
 /* styles/globals.css */
 body {
     background-color: black;  /* Set the background to black */
@@ -15,8 +14,7 @@ body {
 html {
     background-color: black;
 }
-  
-=======
+
 :root{
   overflow: hidden;
 }

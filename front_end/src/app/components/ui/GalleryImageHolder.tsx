@@ -10,11 +10,17 @@ interface GalleryImageHolderProps {
 const handleDownload = async (imageUrl: string, title: string) => {
   saveAs(imageUrl, title);
 };
-const deleteImage = async (imgpath: string) => {
+
+const handleDelete = async (imgurl: string) => {
   try {
+    const url = new URL(imgurl);
+    const imagePathToDelete = decodeURIComponent(url.pathname.split("/").slice(-2).join("/"));
+    console.log(url);
+    console.log(imagePathToDelete);
+
     const { data, error } = await supabase.storage
       .from("SnapSync Photos")
-      .remove([imgpath]);
+      .remove([imagePathToDelete]);
 
     if (error) {
       throw error;
@@ -25,13 +31,7 @@ const deleteImage = async (imgpath: string) => {
     console.error("Error deleting image:", error.message);
   }
 };
-const handleDelete = async (imgurl: string) => {
-  const url = new URL(imgurl);
-  const imagePathToDelete = url.pathname.split("/").slice(-2).join("/");
-  console.log(url);
-  console.log(imagePathToDelete);
-  await deleteImage(imagePathToDelete);
-};
+
 
 const GalleryImageHolder = ({
   imageUrl,

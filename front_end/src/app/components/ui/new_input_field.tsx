@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { supabase } from "@/app/utils/supabase/supabase";
+import { toast } from "react-hot-toast";
 
 export default function New_Event_input() {
   const [eventName, setEventName] = useState("");
@@ -14,9 +15,24 @@ export default function New_Event_input() {
 
       setEventName("");
 
+      console.log("New event created");
+      toast.success("New event created", {
+        position: "bottom-right",
+        duration: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return console.log(data);
     } catch (error) {
       console.error("Error creating the new event : ");
+      toast.error("Event could not be created, try again", {
+        duration: 1500,
+        position: "bottom-right",
+      });
       return error;
     }
   };

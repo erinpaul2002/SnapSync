@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import GalleryImageHolder from "../components/ui/GalleryImageHolder";
 import { supabase } from "@/app/utils/supabase/supabase";
 import { AuroraBackground } from "../components/ui/aurora_background";
+import FileUpload from "../components/ui/FileUpload";
 
 interface ImageInfo {
   imageUrl: string;
@@ -14,6 +15,7 @@ interface ImageInfo {
 
 export default function Gallery() {
   const [images, setImages] = useState<ImageInfo[]>([]);
+  const [refreshFlag, setRefreshFlag] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchImages() {
@@ -52,11 +54,15 @@ export default function Gallery() {
     }
 
     fetchImages();
-  }, []);
+  }, [refreshFlag]);
+
+  const triggerRefresh = () => {
+    setRefreshFlag(!refreshFlag); // Toggle refreshFlag to trigger useEffect
+  };
 
   return (
     <div className="bg-black">
-      <AuroraBackground className=" bg-slate-800" />
+      {/* <AuroraBackground className=" bg-slate-800" /> */}
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-col text-center w-full mb-20">
@@ -67,6 +73,9 @@ export default function Gallery() {
               Was this really the best IV? I wonder, but running over hot coals
               makes our small pretty baby feet all strong and rough
             </p>
+            <div className="z-100">
+              <FileUpload onUpload={triggerRefresh} />
+            </div>
           </div>
           <div className="flex flex-wrap -m-4">
             {images.map((img) => (

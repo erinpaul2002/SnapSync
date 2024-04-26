@@ -66,6 +66,10 @@ export default function Gallery() {
             Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical
             gentrify, subway tile poke farm-to-table.
           </p>
+          <div>
+            <input type="file" />
+            <button>Upload File</button>
+          </div>
         </div>
         <div className="flex flex-wrap -m-4">
           {images.map((img) => (
@@ -76,7 +80,11 @@ export default function Gallery() {
               subtitle={img.subtitle}
             />
           ))}
-          <GalleryImageHolder imageUrl="https://suvgasxjlxfjzibnbyfk.supabase.co/storage/v1/object/public/SnapSync%20Photos/Sample_Event/photo_2023-12-03_11-14-41.jpg" title="something" subtitle="nothing" />
+          <GalleryImageHolder
+            imageUrl="https://suvgasxjlxfjzibnbyfk.supabase.co/storage/v1/object/public/SnapSync%20Photos/Sample_Event/photo_2023-12-03_11-14-41.jpg"
+            title="something"
+            subtitle="nothing"
+          />
         </div>
       </div>
     </section>

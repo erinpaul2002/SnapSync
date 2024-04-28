@@ -18,12 +18,12 @@ export default function Home() {
               Old Event
             </button>
           </Link>
-          <Link href="new-event">
+          <Link href="/new-event">
             <button className="bg-Jewel hover:bg-Rose text-white font-bold py-2 px-6 rounded-md transition duration-300 ease-in-out">
               New Event
             </button>
           </Link>
-          <Link href="search">
+          <Link href="/search">
             <button className="bg-Jewel hover:bg-Rose text-white font-bold py-2 px-8 rounded-md transition duration-300 ease-in-out">
               Search
             </button>

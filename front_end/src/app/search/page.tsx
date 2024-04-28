@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AuroraBackground } from "../components/ui/aurora_background";
 import { Meteors } from "../components/ui/meteors";
 import New_Event_input from "../components/ui/new_input_field";
+import BackButton from "../components/back_button";
 
 // Parent component for the image search page
 export default function ImageSearchPage() {
@@ -36,6 +37,7 @@ export default function ImageSearchPage() {
       <div className="w-full relative max-w-lg m-0"> {/* Adjusted max-width to max-w-lg */}
         <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-purple-500 to-pink-500 transform scale-[0.80] bg-red-500 rounded-full blur-3xl" />
         <div className="relative shadow-xl bg-gray-900 border border-gray-800  px-4 py-8 h-min overflow-hidden rounded-2xl flex flex-col justify-end items-start">
+        <BackButton />
           <h1 className="font-bold text-xl text-white relative z-50 m-0 p-0 place-self-center">
             IMAGE SEARCH
           </h1>

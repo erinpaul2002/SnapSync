@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { supabase } from "@/app/utils/supabase/supabase";
 import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 export default function New_Event_input() {
   const [eventName, setEventName] = useState("");
@@ -54,6 +55,7 @@ export default function New_Event_input() {
 
   return (
     <div className="mt-6 flex flex-col">
+      
       <div className="relative mt-2 rounded-md shadow-sm z-50">
         <input
           type="text"

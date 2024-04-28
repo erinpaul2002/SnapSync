@@ -27,10 +27,14 @@ const handleDelete = async (imgurl: string) => {
     }
 
     console.log("Image deleted successfully:", data);
+
+    // Refresh the page after successful deletion
+    window.location.reload();
   } catch (error: any) {
     console.error("Error deleting image:", error.message);
   }
 };
+
 
 
 const GalleryImageHolder = ({

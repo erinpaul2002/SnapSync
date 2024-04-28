@@ -26,9 +26,9 @@ export default function PageLayout() {
 
           <Old_Event_input />
 
-          <button className="border mt-10 justify-self-center place-self-center px-4 py-1 rounded-lg  border-gray-500 text-gray-300 z-50">
+          {/* <button className="border mt-10 justify-self-center place-self-center px-4 py-1 rounded-lg  border-gray-500 text-gray-300 z-50">
             Submit
-          </button>
+          </button> */}
           <Meteors number={20} />
         </div>
       </div>

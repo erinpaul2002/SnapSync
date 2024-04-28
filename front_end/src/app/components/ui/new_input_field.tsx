@@ -9,9 +9,28 @@ export default function New_Event_input() {
 
   const handleNewEvent = async () => {
     try {
+      // Check if the event name already exists
+      const { data: existingEvents, error: eventError } = await supabase
+        .from("Events")
+        .select("*")
+        .eq("event_name", eventName);
+
+      if (eventError) {
+        throw eventError;
+      }
+
+      if (existingEvents.length > 0) {
+        throw new Error("Event name already exists");
+      }
+
+      // Insert new event into the Events table
       const { data, error } = await supabase
         .from("Events")
-        .insert({ event_name: `${eventName}` });
+        .insert({ event_name: eventName });
+
+      if (error) {
+        throw error;
+      }
 
       setEventName("");
 
@@ -19,21 +38,17 @@ export default function New_Event_input() {
       toast.success("New event created", {
         position: "bottom-right",
         duration: 2000,
-        // hideProgressBar: false,
-        // closeOnClick: true,
-        // pauseOnHover: true,
-        // draggable: true,
-        // progress: undefined,
-        // theme: "light",
       });
-      return console.log(data);
-    } catch (error) {
-      console.error("Error creating the new event : ");
-      toast.error("Event could not be created, try again", {
-        duration: 1500,
-        position: "bottom-right",
-      });
-      return error;
+      console.log(data);
+    } catch (error :any) {
+      console.error("Error creating the new event:", error.message);
+      toast.error(
+        error.message || "Event could not be created, try again",
+        {
+          duration: 1500,
+          position: "bottom-right",
+        }
+      );
     }
   };
 

@@ -43,7 +43,7 @@ export default function PageLayout() {
             </button>
 
             {/* Meaty part - Meteor effect */}
-            <Meteors number={20} />
+            <Meteors number={80} />
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ const SearchUpload = () => {
   };
 
   const uploadFileToSupabase = async (file: File) => {
-    const fileExt = file.name.split('.').pop();
+    const fileExt = file.name.split(".").pop();
     const fileName = `${Math.random()}.${fileExt}`;
     const { data, error } = await supabase.storage
       .from("SnapSync Photos")
@@ -24,8 +24,10 @@ const SearchUpload = () => {
     if (error) {
       throw new Error(error.message);
     }
-    const response = supabase.storage.from("SnapSync Photos").getPublicUrl(`eventFolder/${fileName}`);
-    return response.data.publicUrl
+    const response = supabase.storage
+      .from("SnapSync Photos")
+      .getPublicUrl(`eventFolder/${fileName}`);
+    return response.data.publicUrl;
   };
 
   const findMatches = async (file: File) => {
@@ -33,14 +35,14 @@ const SearchUpload = () => {
     setError(null);
 
     try {
-      const imageUrl = await uploadFileToSupabase(file);  // Ensure this call is awaited and correctly handled
+      const imageUrl = await uploadFileToSupabase(file); // Ensure this call is awaited and correctly handled
 
-      const response = await fetch('http://localhost:5000/find-matches', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/find-matches", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ imageUrl: imageUrl, eventName: 'Sample_Event' })
+        body: JSON.stringify({ imageUrl: imageUrl, eventName: "Sample_Event" }),
       });
 
       if (!response.ok) {
@@ -50,8 +52,8 @@ const SearchUpload = () => {
       const result = await response.json();
       setMatchingImages(result.matching_images);
     } catch (error) {
-      console.error('Error fetching data:', error);
-      setError('Failed to find matches. Please try again.');
+      console.error("Error fetching data:", error);
+      setError("Failed to find matches. Please try again.");
     }
 
     setIsLoading(false);
@@ -67,15 +69,27 @@ const SearchUpload = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="flex flex-col">
+      <form onSubmit={handleSubmit} className=" flex flex-col gap-6">
         <input
           type="file"
           onChange={handleFileChange}
-          className="text-white bg-slate-400 z-110"
+          className="text-white mt-4 bg-slate-400 z-110"
         />
-        <button type="submit" disabled={isLoading} className="z-100">
+        {/* <button
+          type="submit"
+          onClick={handleSubmit}
+          disabled={isLoading}
+          className="z-100"
+        >
           Find Matches
+        </button> */}
+        <button
+          onClick={handleSubmit}
+          className="px-4 py-2 w-24 place-self-center bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+          disabled={isLoading}
+        >
+          Submit
         </button>
       </form>
       {isLoading && <p>Loading...</p>}

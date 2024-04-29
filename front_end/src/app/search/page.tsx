@@ -84,17 +84,10 @@ export default function ImageSearchPage() {
             value={eventName}
             onChange={handleEventNameChange}
             placeholder="Enter event name"
-            className="w-full py-2 px-3 bg-gray-800 text-white rounded-md focus:outline-none focus:ring focus:border-blue-300 mb-4"
+            className="w-full py-2 px-3 mt-6 bg-gray-800 text-white rounded-md focus:outline-none focus:ring focus:border-blue-300 mb-4"
           />
           {/* Image upload input */}
           <SearchUpload />
-          {/* Submit button */}
-          <button
-            onClick={handleSubmit}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
-          >
-            Submit
-          </button>
 
           <Meteors number={20} />
         </div>

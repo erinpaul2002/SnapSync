@@ -10,7 +10,7 @@ interface FileUploadProps {
 const FileUpload: React.FC<FileUploadProps> = ({onUpload}) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileFlag, setfileFlag] = useState(false);
-  const eventName=localStorage.getItem("eventName")
+  const eventName = typeof window !== 'undefined' ? localStorage.getItem('eventName') : null;
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {

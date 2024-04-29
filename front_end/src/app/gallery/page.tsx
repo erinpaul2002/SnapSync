@@ -17,7 +17,8 @@ interface ImageInfo {
 export default function Gallery() {
   const [images, setImages] = useState<ImageInfo[]>([]);
   const [refreshFlag, setRefreshFlag] = useState<boolean>(false);
-  const eventName=localStorage.getItem( 'eventName' );
+  const eventName = typeof window !== 'undefined' ? localStorage.getItem('eventName') : null;
+  
   useEffect(() => {
     async function fetchImages() {
       const { data, error } = await supabase.storage

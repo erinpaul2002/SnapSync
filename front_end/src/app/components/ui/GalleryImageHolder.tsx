@@ -42,6 +42,7 @@ const GalleryImageHolder = ({
   subtitle,
   title,
 }: GalleryImageHolderProps) => {
+  if
   return (
     <div className="lg:w-1/3 sm:w-1/2 p-4">
       <div

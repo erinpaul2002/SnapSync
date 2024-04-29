@@ -39,13 +39,22 @@ export default function New_Event_input() {
       const { error: uploadError } = await supabase.storage
         .from("SnapSync Photos")
         .upload(`${eventName}/dummy.jpg`, file);
+        
 
       if (uploadError) {
         throw uploadError;
       }
+      const { data: deleteResponse, error: deleteError } = await supabase.storage
+      .from("SnapSync Photos")
+      .remove([`${eventName}/dummy.jpg`]);
+
+    if (deleteError) {
+      throw deleteError;
+    }
+
       setEventName("");
       setEventKey("");
-
+      
       console.log("New event created");
       toast.success("New event created", {
         position: "bottom-right",

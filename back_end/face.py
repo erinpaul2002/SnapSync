@@ -1,43 +1,57 @@
 import os
 import cv2
 import face_recognition
-from flask import Flask,request,jsonify
+from supabase import create_client
+from dotenv import load_dotenv
+import numpy as np
+import requests
 
-app = Flask(__name__)
 
-face_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+load_dotenv()
 
-@app.route('/find_user', methods=['POST'])
 
-def search_user():
-    user_image = request.files['user_image']
-    user_image.save('user.jpeg')
+supabase_url = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
+supabase_key = os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
+supabase = create_client(supabase_url, supabase_key)
+
+if __name__ == "__main__":
+
+    face_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
     
+    bucket = supabase.storage.get_bucket('SnapSync Photos').list()
+
     #Final Image List
     result = []
     
     # Load images
     user_image = cv2.imread("user.jpeg")
-
-
+    
     # Detect faces in images
     user_faces = face_detector.detectMultiScale(cv2.cvtColor(user_image, cv2.COLOR_BGR2GRAY), scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
     user_face_encodings = [face_recognition.face_encodings(user_image, [(y, x+w, y+h, x)])[0] for (x, y, w, h) in user_faces]
-    
-    for filename in os.listdir("photos"):
-        if filename.endswith("jpeg") or filename.endswith("jpg") or filename.endswith("png"):
-            
-            image = cv2.imread(os.path.join("photos",filename))
-            faces = face_detector.detectMultiScale(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY), scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+
+    event_data = supabase.storage.from_('SnapSync Photos').list('Sample_Event')
+    for photo in event_data:
+        photo_url = supabase.storage.from_('SnapSync Photos').get_public_url('Sample_Event/%s' % photo['name'])
+        
+        photo_url = photo_url.split()
+        photo_url = photo_url[0]+'%20'+photo_url[1]
+
+
+        resp = requests.get(photo_url)
+        arr = np.asarray(bytearray(resp.content), dtype=np.uint8)
+        image = cv2.imdecode(arr, -1)
+        
+        
+        faces = face_detector.detectMultiScale(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY), scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
             
         # Encode faces
         face_encodings = [face_recognition.face_encodings(image, [(y, x+w, y+h, x)])[0] for (x, y, w, h) in faces]
         
         user_found = False
-
         for face_encoding in face_encodings:
             for user_face_encoding in user_face_encodings:
-                match = face_recognition.compare_faces([user_face_encoding], face_encoding,tolerance=0.6)
+                match = face_recognition.compare_faces([user_face_encoding], face_encoding,tolerance=0.56)
                 if match[0]:
                     user_found = True
                     break
@@ -45,8 +59,7 @@ def search_user():
                 break
             
         if user_found:
-            result.append(filename)
-    return jsonify(result)
+            result.append(photo['name'])
     
-if __name__ == "__main__":
-    app.run(debug = True)
+    print(result)
+    

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { supabase } from "@/app/utils/supabase/supabase"; // Correct import of configured Supabase client
+import GalleryImageHolder from "./GalleryImageHolder";
 
 const SearchUpload = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -42,7 +43,7 @@ const SearchUpload = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ imageUrl: imageUrl, eventName: "Sample_Event" }),
+        body: JSON.stringify({ imageUrl: imageUrl, eventName: "poda" }),
       });
 
       if (!response.ok) {
@@ -51,6 +52,7 @@ const SearchUpload = () => {
 
       const result = await response.json();
       setMatchingImages(result.matching_images);
+      console.log(matchingImages)
     } catch (error) {
       console.error("Error fetching data:", error);
       setError("Failed to find matches. Please try again.");
@@ -74,16 +76,8 @@ const SearchUpload = () => {
         <input
           type="file"
           onChange={handleFileChange}
-          className="text-white mt-4 bg-slate-400 z-110"
+          className="text-white bg-slate-400 z-110"
         />
-        {/* <button
-          type="submit"
-          onClick={handleSubmit}
-          disabled={isLoading}
-          className="z-100"
-        >
-          Find Matches
-        </button> */}
         <button
           onClick={handleSubmit}
           className="px-4 py-2 w-24 place-self-center bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
@@ -96,12 +90,17 @@ const SearchUpload = () => {
       {error && <p className="error">{error}</p>}
       {matchingImages.length > 0 && (
         <div>
-          <h3>Matching Images:</h3>
-          <ul>
-            {matchingImages.map((image, index) => (
-              <li key={index}>{image}</li>
+          <h1>Matching Images:</h1>
+          <div className="flex flex-wrap -m-4">
+            {matchingImages.map((img_url,index) => (
+              <GalleryImageHolder
+                key={`${img_url.split("/")[-1]}-${index}`}
+                imageUrl={img_url}
+                title={img_url.split("/")[-1]}
+                subtitle={"From Supabase"}
+              />
             ))}
-          </ul>
+          </div>
         </div>
       )}
     </div>

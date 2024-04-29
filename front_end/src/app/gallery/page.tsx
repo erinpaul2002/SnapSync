@@ -17,9 +17,8 @@ interface ImageInfo {
 export default function Gallery() {
   const [images, setImages] = useState<ImageInfo[]>([]);
   const [refreshFlag, setRefreshFlag] = useState<boolean>(false);
-  const eventName = typeof window !== 'undefined' ? localStorage.getItem('eventName') : null;
-  
-
+  const eventName =
+    typeof window !== "undefined" ? localStorage.getItem("eventName") : null;
 
   useEffect(() => {
     async function fetchImages() {
@@ -66,32 +65,32 @@ export default function Gallery() {
 
   return (
     <div className="bg-black">
-      <BackButton/>
-      {/* <AuroraBackground className=" bg-slate-800" /> */}
       <section className="text-gray-600 body-font">
-        <div className="container px-5 py-24 mx-auto">
-          <div className="flex flex-col text-center w-full mb-20">
-            <h1 className="sm:text-4xl text-2xl title-font mb-4 text-white font-bold z-50">
-              SnapSync
-            </h1>
-            <p className="lg:w-2/3 mx-auto leading-relaxed text-white z-50">
-              
-            </p>
-            <div className="z-100">
-              <FileUpload onUpload={triggerRefresh} />
+        <AuroraBackground className=" bg-slate-800">
+          <BackButton />
+          <div className="object-contain px-5 py-24 mx-auto">
+            <div className="flex flex-col text-center w-full mb-20">
+              <h1 className=" title-font mb-3 text-white font-bold z-50 text-6xl">
+                SnapSync
+              </h1>
+              <h2 className="text-slate-200 font-light">Event : {eventName} </h2>
+              <p className="lg:w-2/3 mx-auto leading-relaxed text-white z-50"></p>
+              <div className="z-100">
+                <FileUpload onUpload={triggerRefresh} />
+              </div>
+            </div>
+            <div className="flex flex-wrap -m-4">
+              {images.map((img) => (
+                <GalleryImageHolder
+                  key={img.key}
+                  imageUrl={img.imageUrl}
+                  title={img.title}
+                  subtitle={img.subtitle}
+                />
+              ))}
             </div>
           </div>
-          <div className="flex flex-wrap -m-4">
-            {images.map((img) => (
-              <GalleryImageHolder
-                key={img.key}
-                imageUrl={img.imageUrl}
-                title={img.title}
-                subtitle={img.subtitle}
-              />
-            ))}
-          </div>
-        </div>
+        </AuroraBackground>
       </section>
     </div>
   );

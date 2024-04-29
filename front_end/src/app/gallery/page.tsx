@@ -17,12 +17,12 @@ interface ImageInfo {
 export default function Gallery() {
   const [images, setImages] = useState<ImageInfo[]>([]);
   const [refreshFlag, setRefreshFlag] = useState<boolean>(false);
-
+  const eventName=localStorage.getItem( 'eventName' );
   useEffect(() => {
     async function fetchImages() {
       const { data, error } = await supabase.storage
         .from("SnapSync Photos")
-        .list("Sample_Event", {
+        .list(`${eventName}`, {
           limit: 100,
           offset: 0,
           sortBy: { column: "name", order: "asc" },
@@ -38,7 +38,7 @@ export default function Gallery() {
           data.map(async (file, index) => {
             const { data: response } = await supabase.storage
               .from("SnapSync Photos")
-              .getPublicUrl(`Sample_Event/${file.name}`);
+              .getPublicUrl(`${eventName}/${file.name}`);
 
             return {
               imageUrl: response.publicUrl, // Correctly access the publicUrl directly

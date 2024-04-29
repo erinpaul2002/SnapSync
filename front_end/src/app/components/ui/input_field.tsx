@@ -30,7 +30,7 @@ export default function Old_Event_input() {
         position: "bottom-right",
         duration: 1500,
       });
-
+      localStorage.setItem("eventName", eventName);
       // Navigate to the gallery page
       window.location.href = "/gallery";
     } catch (error :any) {

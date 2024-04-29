@@ -5,6 +5,7 @@ import GalleryImageHolder from "../components/ui/GalleryImageHolder";
 import { supabase } from "@/app/utils/supabase/supabase";
 import { AuroraBackground } from "../components/ui/aurora_background";
 import FileUpload from "../components/ui/FileUpload";
+import BackButton from "../components/back_button";
 
 interface ImageInfo {
   imageUrl: string;
@@ -62,6 +63,7 @@ export default function Gallery() {
 
   return (
     <div className="bg-black">
+      <BackButton/>
       {/* <AuroraBackground className=" bg-slate-800" /> */}
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">

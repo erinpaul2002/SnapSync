@@ -1,4 +1,3 @@
-import os
 import cv2
 import face_recognition
 from supabase import create_client

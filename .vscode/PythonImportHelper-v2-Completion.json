@@ -1,14 +1,5 @@
 [
     {
-        "label": "os",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "os",
-        "description": "os",
-        "detail": "os",
-        "documentation": {}
-    },
-    {
         "label": "cv2",
         "kind": 6,
         "isExtraImport": true,
@@ -51,6 +42,14 @@
         "documentation": {}
     },
     {
+        "label": "create_client",
+        "importPath": "supabase_py",
+        "description": "supabase_py",
+        "isExtraImport": true,
+        "detail": "supabase_py",
+        "documentation": {}
+    },
+    {
         "label": "json",
         "kind": 6,
         "isExtraImport": true,
@@ -76,11 +75,20 @@
         "documentation": {}
     },
     {
-        "label": "search_user",
+        "label": "load_known_faces_from_supabase",
         "kind": 2,
         "importPath": "back_end.face",
         "description": "back_end.face",
-        "peekOfCode": "def search_user():\n    user_image = request.files['user_image']\n    user_image.save('user.jpeg')\n    #Final Image List\n    result = []\n    # Load images\n    user_image = cv2.imread(\"user.jpeg\")\n    # Detect faces in images\n    user_faces = face_detector.detectMultiScale(cv2.cvtColor(user_image, cv2.COLOR_BGR2GRAY), scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))\n    user_face_encodings = [face_recognition.face_encodings(user_image, [(y, x+w, y+h, x)])[0] for (x, y, w, h) in user_faces]",
+        "peekOfCode": "def load_known_faces_from_supabase(bucket_name):\n    known_faces.clear()\n    storage = supabase.storage()\n    images = storage.from_storage(\"SnapSync Photos\").list(\"\", limit=1000).data\n    for image in images:\n        image_data = supabase.storage.from_storage(\"SnapSync Photos\").download(image.name)\n        if image_data.status_code == 200:\n            image_bytes = image_data.content\n            face_encoding = face_recognition.face_encodings(image_bytes)[0]\n            known_faces.append((image.name, face_encoding))",
+        "detail": "back_end.face",
+        "documentation": {}
+    },
+    {
+        "label": "compare_images",
+        "kind": 2,
+        "importPath": "back_end.face",
+        "description": "back_end.face",
+        "peekOfCode": "def compare_images():\n    if 'image' not in request.files:\n        return jsonify({'error': 'No image provided'}), 400\n    uploaded_image = request.files['image']\n    uploaded_image.save('uploaded_image.jpeg')\n    # Load uploaded image\n    uploaded_image = face_recognition.load_image_file('uploaded_image.jpeg')\n    uploaded_face_locations = face_recognition.face_locations(uploaded_image)\n    uploaded_face_encodings = face_recognition.face_encodings(uploaded_image, uploaded_face_locations)\n    # Compare uploaded face with known faces from Supabase",
         "detail": "back_end.face",
         "documentation": {}
     },
@@ -89,16 +97,43 @@
         "kind": 5,
         "importPath": "back_end.face",
         "description": "back_end.face",
-        "peekOfCode": "app = Flask(__name__)\nface_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')\n@app.route('/find_user', methods=['POST'])\ndef search_user():\n    user_image = request.files['user_image']\n    user_image.save('user.jpeg')\n    #Final Image List\n    result = []\n    # Load images\n    user_image = cv2.imread(\"user.jpeg\")",
+        "peekOfCode": "app = Flask(__name__)\nknown_faces = []\n# Initialize Supabase client\nsupabase_url = \"https://suvgasxjlxfjzibnbyfk.supabase.co\"\nsupabase_key = \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1dmdhc3hqbHhmanppYm5ieWZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQwNjAzMzMsImV4cCI6MjAyOTYzNjMzM30.fQERUHK-56fjHeNe7csghAdi5biL6RM21_iS20wrQ1U\"\nsupabase = create_client(supabase_url, supabase_key)\n# Function to load and encode faces from images in Supabase storage\ndef load_known_faces_from_supabase(bucket_name):\n    known_faces.clear()\n    storage = supabase.storage()",
         "detail": "back_end.face",
         "documentation": {}
     },
     {
-        "label": "face_detector",
+        "label": "known_faces",
         "kind": 5,
         "importPath": "back_end.face",
         "description": "back_end.face",
-        "peekOfCode": "face_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')\n@app.route('/find_user', methods=['POST'])\ndef search_user():\n    user_image = request.files['user_image']\n    user_image.save('user.jpeg')\n    #Final Image List\n    result = []\n    # Load images\n    user_image = cv2.imread(\"user.jpeg\")\n    # Detect faces in images",
+        "peekOfCode": "known_faces = []\n# Initialize Supabase client\nsupabase_url = \"https://suvgasxjlxfjzibnbyfk.supabase.co\"\nsupabase_key = \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1dmdhc3hqbHhmanppYm5ieWZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQwNjAzMzMsImV4cCI6MjAyOTYzNjMzM30.fQERUHK-56fjHeNe7csghAdi5biL6RM21_iS20wrQ1U\"\nsupabase = create_client(supabase_url, supabase_key)\n# Function to load and encode faces from images in Supabase storage\ndef load_known_faces_from_supabase(bucket_name):\n    known_faces.clear()\n    storage = supabase.storage()\n    images = storage.from_storage(\"SnapSync Photos\").list(\"\", limit=1000).data",
+        "detail": "back_end.face",
+        "documentation": {}
+    },
+    {
+        "label": "supabase_url",
+        "kind": 5,
+        "importPath": "back_end.face",
+        "description": "back_end.face",
+        "peekOfCode": "supabase_url = \"https://suvgasxjlxfjzibnbyfk.supabase.co\"\nsupabase_key = \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1dmdhc3hqbHhmanppYm5ieWZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQwNjAzMzMsImV4cCI6MjAyOTYzNjMzM30.fQERUHK-56fjHeNe7csghAdi5biL6RM21_iS20wrQ1U\"\nsupabase = create_client(supabase_url, supabase_key)\n# Function to load and encode faces from images in Supabase storage\ndef load_known_faces_from_supabase(bucket_name):\n    known_faces.clear()\n    storage = supabase.storage()\n    images = storage.from_storage(\"SnapSync Photos\").list(\"\", limit=1000).data\n    for image in images:\n        image_data = supabase.storage.from_storage(\"SnapSync Photos\").download(image.name)",
+        "detail": "back_end.face",
+        "documentation": {}
+    },
+    {
+        "label": "supabase_key",
+        "kind": 5,
+        "importPath": "back_end.face",
+        "description": "back_end.face",
+        "peekOfCode": "supabase_key = \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1dmdhc3hqbHhmanppYm5ieWZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQwNjAzMzMsImV4cCI6MjAyOTYzNjMzM30.fQERUHK-56fjHeNe7csghAdi5biL6RM21_iS20wrQ1U\"\nsupabase = create_client(supabase_url, supabase_key)\n# Function to load and encode faces from images in Supabase storage\ndef load_known_faces_from_supabase(bucket_name):\n    known_faces.clear()\n    storage = supabase.storage()\n    images = storage.from_storage(\"SnapSync Photos\").list(\"\", limit=1000).data\n    for image in images:\n        image_data = supabase.storage.from_storage(\"SnapSync Photos\").download(image.name)\n        if image_data.status_code == 200:",
+        "detail": "back_end.face",
+        "documentation": {}
+    },
+    {
+        "label": "supabase",
+        "kind": 5,
+        "importPath": "back_end.face",
+        "description": "back_end.face",
+        "peekOfCode": "supabase = create_client(supabase_url, supabase_key)\n# Function to load and encode faces from images in Supabase storage\ndef load_known_faces_from_supabase(bucket_name):\n    known_faces.clear()\n    storage = supabase.storage()\n    images = storage.from_storage(\"SnapSync Photos\").list(\"\", limit=1000).data\n    for image in images:\n        image_data = supabase.storage.from_storage(\"SnapSync Photos\").download(image.name)\n        if image_data.status_code == 200:\n            image_bytes = image_data.content",
         "detail": "back_end.face",
         "documentation": {}
     },

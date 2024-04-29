@@ -35,7 +35,14 @@ export default function New_Event_input() {
       if (error) {
         throw error;
       }
+      const file = new File(["dummy"], "dummy.jpg", { type: "image/jpeg" });
+      const { error: uploadError } = await supabase.storage
+        .from("SnapSync Photos")
+        .upload(`${eventName}/dummy.jpg`, file);
 
+      if (uploadError) {
+        throw uploadError;
+      }
       setEventName("");
       setEventKey("");
 

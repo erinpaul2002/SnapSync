@@ -4,6 +4,7 @@ import { ChangeEvent, SetStateAction, useState } from "react";
 import { AuroraBackground } from "../components/ui/aurora_background";
 import { Meteors } from "../components/ui/meteors";
 import BackButton from "../components/back_button";
+import SearchUpload from "../components/ui/SearchUpload";
 
 // Parent component for the image search page
 export default function ImageSearchPage() {
@@ -86,12 +87,7 @@ export default function ImageSearchPage() {
             className="w-full py-2 px-3 bg-gray-800 text-white rounded-md focus:outline-none focus:ring focus:border-blue-300 mb-4"
           />
           {/* Image upload input */}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageSelect}
-            className="w-full py-2 px-3 bg-gray-800 text-white rounded-md focus:outline-none focus:ring focus:border-blue-300 mb-4"
-          />
+          <SearchUpload />
           {/* Submit button */}
           <button
             onClick={handleSubmit}

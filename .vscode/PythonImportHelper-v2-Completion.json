@@ -1,20 +1,11 @@
 [
     {
-        "label": "cv2",
+        "label": "os",
         "kind": 6,
         "isExtraImport": true,
-        "importPath": "cv2",
-        "description": "cv2",
-        "detail": "cv2",
-        "documentation": {}
-    },
-    {
-        "label": "face_recognition",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "face_recognition",
-        "description": "face_recognition",
-        "detail": "face_recognition",
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
         "documentation": {}
     },
     {
@@ -42,11 +33,63 @@
         "documentation": {}
     },
     {
-        "label": "create_client",
-        "importPath": "supabase_py",
-        "description": "supabase_py",
+        "label": "cv2",
+        "kind": 6,
         "isExtraImport": true,
-        "detail": "supabase_py",
+        "importPath": "cv2",
+        "description": "cv2",
+        "detail": "cv2",
+        "documentation": {}
+    },
+    {
+        "label": "face_recognition",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "face_recognition",
+        "description": "face_recognition",
+        "detail": "face_recognition",
+        "documentation": {}
+    },
+    {
+        "label": "create_client",
+        "importPath": "supabase",
+        "description": "supabase",
+        "isExtraImport": true,
+        "detail": "supabase",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
         "documentation": {}
     },
     {
@@ -75,20 +118,11 @@
         "documentation": {}
     },
     {
-        "label": "load_known_faces_from_supabase",
+        "label": "find_matches",
         "kind": 2,
         "importPath": "back_end.face",
         "description": "back_end.face",
-        "peekOfCode": "def load_known_faces_from_supabase(bucket_name):\n    known_faces.clear()\n    storage = supabase.storage()\n    images = storage.from_storage(\"SnapSync Photos\").list(\"\", limit=1000).data\n    for image in images:\n        image_data = supabase.storage.from_storage(\"SnapSync Photos\").download(image.name)\n        if image_data.status_code == 200:\n            image_bytes = image_data.content\n            face_encoding = face_recognition.face_encodings(image_bytes)[0]\n            known_faces.append((image.name, face_encoding))",
-        "detail": "back_end.face",
-        "documentation": {}
-    },
-    {
-        "label": "compare_images",
-        "kind": 2,
-        "importPath": "back_end.face",
-        "description": "back_end.face",
-        "peekOfCode": "def compare_images():\n    if 'image' not in request.files:\n        return jsonify({'error': 'No image provided'}), 400\n    uploaded_image = request.files['image']\n    uploaded_image.save('uploaded_image.jpeg')\n    # Load uploaded image\n    uploaded_image = face_recognition.load_image_file('uploaded_image.jpeg')\n    uploaded_face_locations = face_recognition.face_locations(uploaded_image)\n    uploaded_face_encodings = face_recognition.face_encodings(uploaded_image, uploaded_face_locations)\n    # Compare uploaded face with known faces from Supabase",
+        "peekOfCode": "def find_matches():\n    image_url = request.json.get('imageUrl')\n    event_name = request.json.get('eventName', 'Sample_Event')  # Default event name if not provided\n    if not image_url:\n        return jsonify({'error': 'No image URL provided'}), 400\n    try:\n        response = requests.get(image_url)\n        if response.status_code != 200:\n            return jsonify({'error': 'Failed to fetch image from URL'}), 400\n        array = np.asarray(bytearray(response.content), dtype=np.uint8)",
         "detail": "back_end.face",
         "documentation": {}
     },
@@ -97,16 +131,7 @@
         "kind": 5,
         "importPath": "back_end.face",
         "description": "back_end.face",
-        "peekOfCode": "app = Flask(__name__)\nknown_faces = []\n# Initialize Supabase client\nsupabase_url = \"https://suvgasxjlxfjzibnbyfk.supabase.co\"\nsupabase_key = \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1dmdhc3hqbHhmanppYm5ieWZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQwNjAzMzMsImV4cCI6MjAyOTYzNjMzM30.fQERUHK-56fjHeNe7csghAdi5biL6RM21_iS20wrQ1U\"\nsupabase = create_client(supabase_url, supabase_key)\n# Function to load and encode faces from images in Supabase storage\ndef load_known_faces_from_supabase(bucket_name):\n    known_faces.clear()\n    storage = supabase.storage()",
-        "detail": "back_end.face",
-        "documentation": {}
-    },
-    {
-        "label": "known_faces",
-        "kind": 5,
-        "importPath": "back_end.face",
-        "description": "back_end.face",
-        "peekOfCode": "known_faces = []\n# Initialize Supabase client\nsupabase_url = \"https://suvgasxjlxfjzibnbyfk.supabase.co\"\nsupabase_key = \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1dmdhc3hqbHhmanppYm5ieWZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQwNjAzMzMsImV4cCI6MjAyOTYzNjMzM30.fQERUHK-56fjHeNe7csghAdi5biL6RM21_iS20wrQ1U\"\nsupabase = create_client(supabase_url, supabase_key)\n# Function to load and encode faces from images in Supabase storage\ndef load_known_faces_from_supabase(bucket_name):\n    known_faces.clear()\n    storage = supabase.storage()\n    images = storage.from_storage(\"SnapSync Photos\").list(\"\", limit=1000).data",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)\nsupabase_url = os.getenv(\"NEXT_PUBLIC_SUPABASE_URL\")\nsupabase_key = os.getenv(\"NEXT_PUBLIC_SUPABASE_ANON_KEY\")\nsupabase = create_client(supabase_url, supabase_key)\nUPLOAD_FOLDER = './back_end/uploads'\nALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}\napp.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER\nos.makedirs(UPLOAD_FOLDER, exist_ok=True)\n@app.route('/find-matches', methods=['POST'])",
         "detail": "back_end.face",
         "documentation": {}
     },
@@ -115,7 +140,7 @@
         "kind": 5,
         "importPath": "back_end.face",
         "description": "back_end.face",
-        "peekOfCode": "supabase_url = \"https://suvgasxjlxfjzibnbyfk.supabase.co\"\nsupabase_key = \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1dmdhc3hqbHhmanppYm5ieWZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQwNjAzMzMsImV4cCI6MjAyOTYzNjMzM30.fQERUHK-56fjHeNe7csghAdi5biL6RM21_iS20wrQ1U\"\nsupabase = create_client(supabase_url, supabase_key)\n# Function to load and encode faces from images in Supabase storage\ndef load_known_faces_from_supabase(bucket_name):\n    known_faces.clear()\n    storage = supabase.storage()\n    images = storage.from_storage(\"SnapSync Photos\").list(\"\", limit=1000).data\n    for image in images:\n        image_data = supabase.storage.from_storage(\"SnapSync Photos\").download(image.name)",
+        "peekOfCode": "supabase_url = os.getenv(\"NEXT_PUBLIC_SUPABASE_URL\")\nsupabase_key = os.getenv(\"NEXT_PUBLIC_SUPABASE_ANON_KEY\")\nsupabase = create_client(supabase_url, supabase_key)\nUPLOAD_FOLDER = './back_end/uploads'\nALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}\napp.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER\nos.makedirs(UPLOAD_FOLDER, exist_ok=True)\n@app.route('/find-matches', methods=['POST'])\ndef find_matches():\n    image_url = request.json.get('imageUrl')",
         "detail": "back_end.face",
         "documentation": {}
     },
@@ -124,7 +149,7 @@
         "kind": 5,
         "importPath": "back_end.face",
         "description": "back_end.face",
-        "peekOfCode": "supabase_key = \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1dmdhc3hqbHhmanppYm5ieWZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQwNjAzMzMsImV4cCI6MjAyOTYzNjMzM30.fQERUHK-56fjHeNe7csghAdi5biL6RM21_iS20wrQ1U\"\nsupabase = create_client(supabase_url, supabase_key)\n# Function to load and encode faces from images in Supabase storage\ndef load_known_faces_from_supabase(bucket_name):\n    known_faces.clear()\n    storage = supabase.storage()\n    images = storage.from_storage(\"SnapSync Photos\").list(\"\", limit=1000).data\n    for image in images:\n        image_data = supabase.storage.from_storage(\"SnapSync Photos\").download(image.name)\n        if image_data.status_code == 200:",
+        "peekOfCode": "supabase_key = os.getenv(\"NEXT_PUBLIC_SUPABASE_ANON_KEY\")\nsupabase = create_client(supabase_url, supabase_key)\nUPLOAD_FOLDER = './back_end/uploads'\nALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}\napp.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER\nos.makedirs(UPLOAD_FOLDER, exist_ok=True)\n@app.route('/find-matches', methods=['POST'])\ndef find_matches():\n    image_url = request.json.get('imageUrl')\n    event_name = request.json.get('eventName', 'Sample_Event')  # Default event name if not provided",
         "detail": "back_end.face",
         "documentation": {}
     },
@@ -133,7 +158,34 @@
         "kind": 5,
         "importPath": "back_end.face",
         "description": "back_end.face",
-        "peekOfCode": "supabase = create_client(supabase_url, supabase_key)\n# Function to load and encode faces from images in Supabase storage\ndef load_known_faces_from_supabase(bucket_name):\n    known_faces.clear()\n    storage = supabase.storage()\n    images = storage.from_storage(\"SnapSync Photos\").list(\"\", limit=1000).data\n    for image in images:\n        image_data = supabase.storage.from_storage(\"SnapSync Photos\").download(image.name)\n        if image_data.status_code == 200:\n            image_bytes = image_data.content",
+        "peekOfCode": "supabase = create_client(supabase_url, supabase_key)\nUPLOAD_FOLDER = './back_end/uploads'\nALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}\napp.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER\nos.makedirs(UPLOAD_FOLDER, exist_ok=True)\n@app.route('/find-matches', methods=['POST'])\ndef find_matches():\n    image_url = request.json.get('imageUrl')\n    event_name = request.json.get('eventName', 'Sample_Event')  # Default event name if not provided\n    if not image_url:",
+        "detail": "back_end.face",
+        "documentation": {}
+    },
+    {
+        "label": "UPLOAD_FOLDER",
+        "kind": 5,
+        "importPath": "back_end.face",
+        "description": "back_end.face",
+        "peekOfCode": "UPLOAD_FOLDER = './back_end/uploads'\nALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}\napp.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER\nos.makedirs(UPLOAD_FOLDER, exist_ok=True)\n@app.route('/find-matches', methods=['POST'])\ndef find_matches():\n    image_url = request.json.get('imageUrl')\n    event_name = request.json.get('eventName', 'Sample_Event')  # Default event name if not provided\n    if not image_url:\n        return jsonify({'error': 'No image URL provided'}), 400",
+        "detail": "back_end.face",
+        "documentation": {}
+    },
+    {
+        "label": "ALLOWED_EXTENSIONS",
+        "kind": 5,
+        "importPath": "back_end.face",
+        "description": "back_end.face",
+        "peekOfCode": "ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}\napp.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER\nos.makedirs(UPLOAD_FOLDER, exist_ok=True)\n@app.route('/find-matches', methods=['POST'])\ndef find_matches():\n    image_url = request.json.get('imageUrl')\n    event_name = request.json.get('eventName', 'Sample_Event')  # Default event name if not provided\n    if not image_url:\n        return jsonify({'error': 'No image URL provided'}), 400\n    try:",
+        "detail": "back_end.face",
+        "documentation": {}
+    },
+    {
+        "label": "app.config['UPLOAD_FOLDER']",
+        "kind": 5,
+        "importPath": "back_end.face",
+        "description": "back_end.face",
+        "peekOfCode": "app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER\nos.makedirs(UPLOAD_FOLDER, exist_ok=True)\n@app.route('/find-matches', methods=['POST'])\ndef find_matches():\n    image_url = request.json.get('imageUrl')\n    event_name = request.json.get('eventName', 'Sample_Event')  # Default event name if not provided\n    if not image_url:\n        return jsonify({'error': 'No image URL provided'}), 400\n    try:\n        response = requests.get(image_url)",
         "detail": "back_end.face",
         "documentation": {}
     },

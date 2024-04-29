@@ -67,11 +67,10 @@ export default function Gallery() {
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-col text-center w-full mb-20">
             <h1 className="sm:text-3xl text-2xl title-font mb-4 text-white font-bold z-50">
-              Maryum Kunjaadukalum
+              
             </h1>
             <p className="lg:w-2/3 mx-auto leading-relaxed text-white z-50">
-              Was this really the best IV? I wonder, but running over hot coals
-              makes our small pretty baby feet all strong and rough
+              
             </p>
             <div className="z-100">
               <FileUpload onUpload={triggerRefresh} />

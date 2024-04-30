@@ -35,10 +35,10 @@ const SearchGalleryComp = ({
                 {title}
               </h1>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center place-self-center w-auto">
               <button
                 onClick={() => handleDownload(imageUrl, title)}
-                className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded w-1/2"
+                className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded w-auto"
               >
                 Download
               </button>

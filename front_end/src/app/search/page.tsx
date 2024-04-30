@@ -3,10 +3,10 @@
 import { ChangeEvent, SetStateAction, useState } from "react";
 import { AuroraBackground } from "../components/ui/aurora_background";
 import { Meteors } from "../components/ui/meteors";
-import BackButton from "../components/back_button";
-import SearchUpload from "../components/ui/SearchUpload";
+import BackButton from "../components/back_button"; 
 import { supabase } from "../utils/supabase/supabase";
-import GalleryImageHolder from "../components/ui/GalleryImageHolder";
+import SearchGalleryComp from "../components/ui/SearchGalleryComp";
+
 
 // Parent component for the image search page
 export default function ImageSearchPage() {
@@ -171,7 +171,7 @@ export default function ImageSearchPage() {
                   </h1>
                   <div className="flex flex-wrap -m-4">
                     {matchingImages.map((img_url, index) => (
-                      <GalleryImageHolder
+                      <SearchGalleryComp
                         key={`${img_url.split("/")[-1]}-${index}`}
                         imageUrl={img_url}
                         title={img_url.split("/")[img_url.split("/").length -1]}

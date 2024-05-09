@@ -26,7 +26,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 @app.route('/find-matches', methods=['POST'])
 def find_matches():
     image_url = request.json.get('imageUrl')
-    event_name = request.json.get('eventName', 'poda')  # Default event name if not provided
+    event_name = request.json.get('eventName', 'Sample_Event')  # Default event name if not provided
 
     if not image_url:
         return jsonify({'error': 'No image URL provided'}), 400

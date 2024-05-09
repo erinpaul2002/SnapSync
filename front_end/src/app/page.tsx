@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { AuroraBackground } from "./components/ui/aurora_background";
 import "./globals.css";
-import Notes from "./notes/page";
 import Link from "next/link";
 
 export default function Home() {

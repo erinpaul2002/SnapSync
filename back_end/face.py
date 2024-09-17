@@ -71,7 +71,7 @@ def find_matches():
             
             user_found = False
             for face_encoding in face_encodings:
-                matches = face_recognition.compare_faces(user_face_encodings, face_encoding, tolerance=0.575)
+                matches = face_recognition.compare_faces(user_face_encodings, face_encoding, tolerance=0.565)
                 if True in matches:
                     user_found = True
                     break
